@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Reservas</title>
+      <link rel="stylesheet" href="./reservasDia.css">
+</head>
+<body>
+      <div class="cabecalho">
+            <div class="nomeNandu">
+                  <h2>Reservas da Nandu's</h2>
+                  <p>Reservas do dia</p>
+            </div>
+            <div class="logoNandu">
+                  <img src="./barberIcon.png" alt="" style="width: 50px;">
+            </div>
+      </div>
+      
+      <div class="container">
+            <ul id="listaReservas">
+            </ul>
+      </div>
+      
+
+      <div class="rodape">
+            <div class="pagamentos">
+                  <a href="pagamentos.html">Pagamentos</a>
+            </div>
+
+            <div class="botaoHome">
+                  <a href="./agenda.html" class="ancoraHome">
+                        <img src="./botaoHome.png" style="width: 50px;"></img>
+                  </a>
+            </div>
+
+            <div class="reservas">
+                  <a href="reservasDia.html">Reservas</a>
+            </div>
+      </div>
+
+      <script>
+            function carregarReservas() {
+            const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+            const listaReservas = document.getElementById('listaReservas');
+            listaReservas.innerHTML = '';
+
+            const hoje = new Date();
+            const dataAtual = `${String(hoje.getDate()).padStart(2, '0')}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${hoje.getFullYear()}`;
+            
+            // Filtrando as reservas do dia
+            const reservasHoje = reservas.filter(reserva => reserva.dataReserva === dataAtual);
+
+            // Ordenando as reservas pelo horário
+            reservasHoje.sort((a, b) => {
+                  return horarioParaNumero(a.horario) - horarioParaNumero(b.horario);
+            });
+
+            // Listando as reservas
+                  for (let reserva of reservasHoje) {
+                        const li = document.createElement('li');
+                        li.textContent = `Cliente: ${reserva.cliente}  ${reserva.horario}h ${reserva.id}`;
+                        listaReservas.appendChild(li);
+                  }
+            }
+
+
+            function horarioParaNumero(horario) {
+                  return parseInt(horario.replace(':', ''));
+            }
+
+
+            // Carregando as reservas quando a página é carregada
+            carregarReservas();
+      </script>
+
+</body>
+
+</html>

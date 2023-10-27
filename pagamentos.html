@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>pagamentos</title>
+</head>
+
+<body>
+
+      <h1>Pagamentos da Barbearia</h1>
+
+      <form id="pagamentoForm">
+            <label for="clientePagamento">Cliente:</label>
+            <input type="text" id="clientePagamento" name="clientePagamento" required><br><br>
+
+            <label for="formaPagamento">Forma de Pagamento:</label>
+            <select id="formaPagamento" name="formaPagamento">
+                  <option value="pix">Pix</option>
+                  <option value="cartao">Cartão</option>
+                  <option value="dinheiro">Dinheiro</option>
+            </select><br><br>
+
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" name="valor" step="0.01" required><br><br>
+
+            <button type="button" onclick="adicionarPagamento()">Registrar Pagamento</button>
+      </form>
+
+      <h2>Pagamentos</h2>
+
+      <h3>Totais</h3>
+      <p>Total PIX: R$ <span id="totalPix">0.00</span></p>
+      <p>Total Cartão: R$ <span id="totalCartao">0.00</span></p>
+      <p>Total Dinheiro: R$ <span id="totalDinheiro">0.00</span></p>
+      <p>Total Geral: R$ <span id="totalGeral">0.00</span></p>
+
+      <button>
+            <a href="agenda.html">Ir para novas agendas</a>
+      </button>
+      <button>
+            <a href="reservasDia.html">Ir para reservas</a>
+      </button>
+
+      <ul id="listaPagamentos">
+            <!-- Os pagamentos serão listados aqui pelo JavaScript -->
+      </ul>
+
+
+
+      <script>
+            function carregarPagamentos() {
+                  const pagamentos = JSON.parse(localStorage.getItem('pagamentos') || '[]');
+                  const listaPagamentos = document.getElementById('listaPagamentos');
+                  listaPagamentos.innerHTML = '';
+
+                  let totalPix = 0;
+                  let totalCartao = 0;
+                  let totalDinheiro = 0;
+
+                  for (let pagamento of pagamentos) {
+                        const li = document.createElement('li');
+                        li.textContent = `Cliente: ${pagamento.cliente}, Forma: ${pagamento.forma}, Valor: R$ ${parseFloat(pagamento.valor).toFixed(2)}`;
+                        listaPagamentos.appendChild(li);
+
+                        switch (pagamento.forma) {
+                              case 'pix':
+                                    totalPix += parseFloat(pagamento.valor);
+                                    break;
+                              case 'cartao':
+                                    totalCartao += parseFloat(pagamento.valor);
+                                    break;
+                              case 'dinheiro':
+                                    totalDinheiro += parseFloat(pagamento.valor);
+                                    break;
+                        }
+                  }
+
+                  document.getElementById('totalPix').textContent = totalPix.toFixed(2);
+                  document.getElementById('totalCartao').textContent = totalCartao.toFixed(2);
+                  document.getElementById('totalDinheiro').textContent = totalDinheiro.toFixed(2);
+                  document.getElementById('totalGeral').textContent = (totalPix + totalCartao + totalDinheiro).toFixed(2);
+            }
+
+            function adicionarPagamento() {
+                  const cliente = document.getElementById('clientePagamento').value;
+                  const forma = document.getElementById('formaPagamento').value;
+                  const valor = parseFloat(document.getElementById('valor').value).toFixed(2);
+
+                  const pagamentos = JSON.parse(localStorage.getItem('pagamentos') || '[]');
+                  pagamentos.push({ cliente, forma, valor });
+                  localStorage.setItem('pagamentos', JSON.stringify(pagamentos));
+
+                  carregarPagamentos();
+            }
+
+            carregarPagamentos();
+      </script>
+
+</body>
+
+</html>

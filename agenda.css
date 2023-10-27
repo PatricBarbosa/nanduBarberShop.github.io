@@ -1,0 +1,185 @@
+/* Reset Básico */
+body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif, sans-serif; /* Fonte padrão. Você pode escolher outra de sua preferência. */
+      color: #ffffff;
+      background-color: #f5f5f5;
+      width: 100vw;
+      height: 100vh;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background-color: #333;
+}
+@font-face {
+      font-family: barberFont;
+      src: url(./BarbershopThailand.ttf);
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+*{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border: 0;
+}
+/*==================== Cabeçalho ====================*/
+div.cabecalho{
+      height: 15vh;
+      width: 100vw;
+      display: flex;
+      justify-content: space-between;
+}
+div.nomeNandu{
+      width: 70%;
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+}
+div.nomeNandu > h2{
+      font-family: barberFont;
+      margin-top: 5px;
+      margin-bottom: 0px;
+}
+
+div.nomenandu > p{
+      margin-top: 5px;
+}
+
+div.logoNandu{
+      width: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+}
+div.logoNandu > img{
+      width: 50px;
+}
+
+
+
+
+/*===============================================*/
+/*==================== corpo ====================*/
+div.container{
+      height: 70vh;
+      background-color: #2b2b2b;
+      font-size: 1 rem;
+      height: 80%;
+      width: 100%;
+
+      display: flex;
+      flex-direction: column;
+}
+#reservaForm{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 70%;
+}
+label{
+      margin-bottom: 5px;
+}
+input{
+      margin-bottom: 10px;
+      outline: none;
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+input:hover {
+      scale: 1.1;
+      transition: 0.5s;
+}
+input::placeholder{
+      color: #ffffff7a;
+}
+div.inputArea{
+      margin-top: 30px;
+      width: 80%;
+}
+div.inputList{
+      display: flex;
+      flex-direction: column;
+}
+button{
+      color: white;
+      border: none;
+      cursor: pointer;
+      background-color: rgb(101, 101, 101);
+}
+button.botaoReservar{
+      font-weight: 600;
+      letter-spacing: 2px;
+      width: 130px;
+      height: 40px;
+      border-radius: 5px;
+}
+a{
+      color: #f5f5f5;
+      text-decoration: none;
+}
+
+div.areaExcluirReserva {
+      height: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+}
+
+div.inputListExcluirReserva {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+}
+
+button.botaoExcluirReserva {
+      width: 80px;
+      height: 30px;
+      border-radius: 5px;
+      margin-top: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+}
+
+
+/*================================================*/
+/*==================== Rodapé ====================*/
+div.rodape{
+      height: 15%;
+      width: 100%;
+      display: flex;
+      
+}
+div.pagamentos {
+      width: 40%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
+div.botaoHome {
+      width: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
+.ancoraHome {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
+div.reservas {
+      width: 40%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
