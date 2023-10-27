@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Agenda</title>
+      <link rel="stylesheet" href="agenda.css">
+</head>
+<body>
+      <div class="cabecalho">
+            <div class="nomeNandu">
+                  <h2>Nandu's Barber Shop</h2>
+                  <p>Área de agendas</p>
+            </div>
+            <div class="logoNandu">
+                  <img src="./barberIcon.png" alt="">
+            </div>
+      </div>
+
+      <div class="container">
+            <form id="reservaForm">
+                  <div class="inputArea">
+                        <div class="inputList">
+                              <label for="cliente">Cliente:</label>
+                              <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente" required>
+                        </div>
+                        
+                        <br><br>
+                        <div class="inputList">
+                              <label for="dataReserva">Data da Reserva:</label>
+                              <input type="text" id="dataReserva" name="dataReserva" placeholder="DD / MM / YYYY"
+                              onfocus="(this.type='date')" required>
+                        </div>
+                        
+                        <br><br>
+                        <div class="inputList">
+                              <label for="horario">Horário:</label>
+                              <input type="text" id="horario" name="horario" placeholder=" -- : -- "
+                              onfocus="(this.type='time')" required>
+                        </div>
+                  
+                  </div>
+
+                  <span id="erroHorario" style="color: red; font-size: 15px;"></span><br> <!-- Mensagem de erro aqui -->
+
+                  <button type="button" onclick="adicionarReserva()" class="botaoReservar">Reservar</button>
+            </form>
+
+
+            <div class="areaExcluirReserva">
+                  <div class="inputListExcluirReserva">
+                        <!-- AS RESERVAS PODEM SER DELETADAS AQUI -->
+                        <p>Excluir Reserva</p>
+                        <label for="idReserva">ID da Reserva:</label>
+                        <input type="text" id="idReserva" placeholder="Digite o ID da reserva">
+                        <button onclick="deletarReservaPorInput()" class="botaoExcluirReserva">Excluir</button>
+                  </div>
+            </div>
+      </div>
+
+      <div class="rodape">
+            <div class="pagamentos">
+                  <a href="pagamentos.html">Pagamentos</a>
+            </div>
+
+            <div class="botaoHome">
+                  <a href="./index.html" class="ancoraHome">
+                        <img src="./botaoHome.png" style="width: 50px;"></img>
+                  </a>
+            </div>
+
+            <div class="reservas">
+                  <a href="reservasDia.html">Reservas</a>
+            </div>
+      </div>
+     
+
+      <script>
+            function carregarReservas() {
+                  const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+                  const listaReservas = document.getElementById('listaReservas');
+                  listaReservas.innerHTML = '';
+
+                  const hoje = new Date();
+                  const dataAtual = `${String(hoje.getDate()).padStart(2, '0')}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${hoje.getFullYear()}`;
+                  
+
+                        for (let reserva of reservas) {
+                              if (reserva.dataReserva === dataAtual) {
+                                    const li = document.createElement('li');
+                                    li.textContent = `${reserva.cliente}  ${reserva.horario}h ${reserva.id}`;
+                                    listaReservas.appendChild(li);''
+                              }
+                        }
+            }
+
+            function adicionarReserva() {
+                  const cliente = document.getElementById('cliente').value;
+                  const horario = document.getElementById('horario').value;
+                  const dataReserva = document.getElementById('dataReserva').value.split("-").reverse().join("-");
+                  const id = new Date().getTime();
+                  const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+                 
+                  // Verifica se o horário é inteiro
+                  const minutos = horario.split(':')[1];
+                  if (minutos !== '00') {
+                        document.getElementById('erroHorario').textContent = 'Por favor, escolha um horário inteiro (ex: 17:00).';
+                        return; // Interrompe a função aqui
+                  } else {
+                        document.getElementById('erroHorario').textContent = ''; // Limpa a mensagem de erro, se houver
+                  }
+
+                  // Verifica se já existe uma reserva para a mesma data e horário
+                  const reservaExistente = reservas.some(reserva => 
+                        reserva.dataReserva === dataReserva && reserva.horario === horario
+                  );
+
+                  if (reservaExistente) {
+                        alert("Já existe uma reserva para esta data e horário!");
+                        const cliente2 = document.getElementById('cliente');
+                        cliente2.value = '';
+                        const horario2 = document.getElementById('horario');
+                        horario2.value = '';
+                        const dataReserva2 = document.getElementById('dataReserva');
+                        dataReserva2.value = '';
+                        return; // Interrompe a função aqui
+                  }
+                  
+                  reservas.push({ id, cliente, horario, dataReserva });
+                  localStorage.setItem('reservas', JSON.stringify(reservas));
+                  
+                  const cliente2 = document.getElementById('cliente');
+                  cliente2.value = '';
+                  const horario2 = document.getElementById('horario');
+                  horario2.value = '';
+                  const dataReserva2 = document.getElementById('dataReserva');
+                  dataReserva2.value = '';
+
+                  carregarReservas();
+            }
+
+            function deletarReserva(id) {
+            const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+            const index = reservas.findIndex(reserva => reserva.id == id);
+            
+                  if(index !== -1) {
+                        reservas.splice(index, 1);
+                        localStorage.setItem('reservas', JSON.stringify(reservas));
+                        const idInput2 = document.getElementById('idReserva')
+                        idInput2.value = '';
+                        alert('Reserva cancelada!');
+                        carregarReservas();
+                  } else {
+                        alert('Reserva não encontrada.');
+                  }
+            }
+
+            function deletarReservaPorInput() {
+                  const idInput = document.getElementById('idReserva');
+                  const id = idInput.value;
+
+                  if (id) {
+                        deletarReserva(id);
+                        const idInput2 = document.getElementById('idReserva')
+                        idInput2.value = ''; // Limpa o input após a operação
+                  } else {
+                        alert('Por favor, insira um ID válido.');
+                  }
+            }
+
+            // Carregando as reservas quando a página é carregada
+            
+      </script>
+
+</body>
+</html>
